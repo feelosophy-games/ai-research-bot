@@ -206,7 +206,7 @@ Expected: 커밋·푸시 성공. (드라이런으로 만든 `reports/<오늘>.md
 - Consumes: Task 1의 GitHub repo URL, Task 2의 `research-prompt.md`(저장소에 푸시됨).
 - Produces: 활성화된 클라우드 루틴 1개, 검증된 첫 리포트가 GitHub `main`에 푸시됨.
 
-- [ ] **Step 1: 루틴 생성 (RemoteTrigger create)**
+- [x] **Step 1: 루틴 생성 (RemoteTrigger create)**
 
 `ToolSearch select:RemoteTrigger`로 툴을 로드한 뒤 `action: "create"` 호출. body 핵심값:
 - `name`: `"AI 주간 리서치"`
@@ -225,48 +225,31 @@ Expected: 커밋·푸시 성공. (드라이런으로 만든 `reports/<오늘>.md
     리포트 파일을 생성하고 git add/commit/push 까지 완료하라. 사람에게 질문하지 말 것.
     ```
 
-Expected: 응답에 routine ID 반환. 끝에 `https://claude.ai/code/routines/{ROUTINE_ID}` 링크 확보.
+> 결과: 루틴 ID `trig_01J3hMW68rjkaiDUDkr1oCap` 생성됨.
+> 관리 링크: https://claude.ai/code/routines/trig_01J3hMW68rjkaiDUDkr1oCap
 
-> 참고: cron은 UTC·최소 1시간 간격. 클라우드 에이전트는 로컬 파일 접근 불가 — 모든 컨텍스트가 저장소 안에 있어야 한다(그래서 프롬프트가 repo의 research-prompt.md를 읽는 구조).
+- [x] **Step 2: 즉시 실행으로 검증 (run now)**
 
-- [ ] **Step 2: 즉시 실행으로 검증 (run now)**
+`RemoteTrigger`를 `action: "run", trigger_id: "trig_01J3hMW68rjkaiDUDkr1oCap"`로 호출해 한 번 돌림.
 
-`RemoteTrigger`를 `action: "run", trigger_id: "<ROUTINE_ID>"`로 호출해 한 번 돌린다.
-클라우드 실행이므로 즉시 끝나지 않는다 — 잠시 후 GitHub에서 결과를 확인한다.
+> 결과: 클라우드 루틴이 실행되어 `reports/2026-06-29.md` 생성 및 GitHub 푸시 완료 (commit `3d01bb5`).
 
-- [ ] **Step 3: 푸시 결과 확인**
+- [x] **Step 3: 푸시 결과 확인**
 
-수 분 뒤, 루틴이 실제로 리포트를 푸시했는지 확인한다.
+> 결과:
+> ```
+> 3d01bb5 리포트: 2026-06-29   ← 클라우드 루틴이 푸시한 커밋
+> ```
+> `reports/2026-06-29.md` 정상 생성 확인. 항목 5개(모델 뉴스) + 4개(업무 자동화) + 한 줄 정리 포함.
+>
+> **첫 리서치 결과물 요약 (2026-06-29):**
+> - 🗞️ AI 모델/제품: Anthropic Fable 5·Mythos 5 수출 규제 및 복원 / Microsoft MAI 패밀리 / Sakana Fugu Ultra / OpenAI Codex Remote GA / Apple WWDC Siri AI
+> - 🛠️ 업무 자동화: AI 에이전트 5대 ROI 카테고리 / ChatGPT 비즈니스 플러그인 6종 / 조달 워크플로우 50% 단축 / Microsoft 365 Copilot SMB 상시 SKU 전환
+> - 파일: [`reports/2026-06-29.md`](../../reports/2026-06-29.md)
 
-Run:
-```bash
-cd ~/jp-projects/ai-research-bot
-git pull --quiet origin main
-ls -t reports/*.md | head -3
-git log --oneline -3
-```
-Expected: 오늘 날짜의 새 `reports/*.md`가 들어오고, 로그에 `리포트: <오늘>` 커밋이 보인다.
-- 만약 푸시가 안 됐다면: 루틴 상세(`action: "get"`)로 실행 로그/에러를 확인한다. 권한(클라우드 환경의 repo push 자격) 문제면, 저장소가 public이고 origin이 https인지 확인하고 프롬프트의 push 단계를 점검한다.
+- [x] **Step 4: README에 루틴 정보 추가 + 커밋**
 
-- [ ] **Step 4: README에 루틴 정보 추가 + 커밋**
-
-`README.md`의 "스케줄 관리" 항목에 실제 routine ID와 링크를 추가한다.
-
-```markdown
-## 스케줄 관리
-- 루틴: AI 주간 리서치 (매주 금 17:00 KST / 08:00 UTC)
-- 관리: https://claude.ai/code/routines/<ROUTINE_ID>
-- 목록/삭제: https://claude.ai/code/routines
-```
-
-Run:
-```bash
-cd ~/jp-projects/ai-research-bot
-git add README.md
-git commit -m "README에 클라우드 루틴 정보 추가"
-git push origin main
-```
-Expected: 커밋·푸시 성공.
+> 결과: `README.md`에 루틴 ID·관리 링크 추가 후 커밋·푸시 완료 (commit `697d7d5`).
 
 ---
 
