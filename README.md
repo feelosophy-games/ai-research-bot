@@ -16,4 +16,7 @@ git pull 하면 최신 리포트가 `reports/`에 들어온다.
 claude -p "research-prompt.md 를 읽고 그 지시를 그대로 따라 이번 주 리포트를 생성하라"
 
 ## 스케줄 관리
-클라우드 루틴 목록/수정: https://claude.ai/code/routines
+- 루틴: AI 주간 리서치 (매주 금 17:00 KST / 08:00 UTC)
+- 루틴 ID: trig_01J3hMW68rjkaiDUDkr1oCap
+- 관리: https://claude.ai/code/routines/trig_01J3hMW68rjkaiDUDkr1oCap
+- 목록/삭제: https://claude.ai/code/routines
